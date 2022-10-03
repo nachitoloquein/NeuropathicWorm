@@ -1,3 +1,0 @@
-﻿
-echo "hola"
-cls
