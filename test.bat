@@ -1,5 +1,11 @@
 @echo off
-echo "Hola mundo"
-start chrome
-echo "Fuiste hackeado"
-start Spotify.exe
+echo "Hola"
+$variable
+if  ($variable -like "Hola"){
+    echo "Chao"
+}
+else{
+    Echo "Chupalo"
+}
+[void][System.Windows.Forms.MessageBox]::Show('Test','Title')
+pause
